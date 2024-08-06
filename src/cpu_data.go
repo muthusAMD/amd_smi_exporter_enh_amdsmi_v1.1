@@ -206,7 +206,7 @@ func (c *amd_data) Collect(ch chan<- prometheus.Metric) {
 
 	data := c.Data() //Call the Scan() function here and get AMDParams
 
-	for threadCounter := 0; threadCounter < data.Threads; threadCounter++{
+	for threadCounter := 0; threadCounter < int(data.Threads); threadCounter++{
 		coreEnergy_ := data.CoreEnergy[threadCounter]
 		ch <- prometheus.MustNewConstMetric(c.CoreEnergy, prometheus.CounterValue, float64(coreEnergy_), strconv.Itoa(threadCounter))
 				
@@ -214,7 +214,7 @@ func (c *amd_data) Collect(ch chan<- prometheus.Metric) {
 		ch <- prometheus.MustNewConstMetric(c.BoostLimit, prometheus.GaugeValue, float64(coreBoost_), strconv.Itoa(threadCounter))
 	}
 
-	for socketCounter := 0; socketCounter < data.Sockets; socketCounter++{
+	for socketCounter := 0; socketCounter < int(data.Sockets); socketCounter++{
 		socketEnergy_ := data.SocketEnergy[socketCounter]
 		ch <- prometheus.MustNewConstMetric(c.SocketEnergy, prometheus.CounterValue, float64(socketEnergy_), strconv.Itoa(socketCounter))
 		
@@ -228,7 +228,7 @@ func (c *amd_data) Collect(ch chan<- prometheus.Metric) {
 		ch <- prometheus.MustNewConstMetric(c.ProchotStatus, prometheus.GaugeValue, float64(prochotStatus_), strconv.Itoa(socketCounter))
 	}
 
-	for gpuCounter := 0; gpuCounter < data.NumGPUs; gpuCounter++{
+	for gpuCounter := 0; gpuCounter < int(data.NumGPUs); gpuCounter++{
 		gpuDevId_ := data.GPUDevId[gpuCounter]
 		ch <- prometheus.MustNewConstMetric(c.GPUDevId, prometheus.GaugeValue, float64(gpuDevId_), strconv.Itoa(gpuCounter), gGPUProductNames[gpuCounter])
 		
